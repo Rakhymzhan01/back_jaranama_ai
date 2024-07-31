@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Install dependencies, including Puppeteer which will download the required Chromium
 RUN npm install
 
 # Copy the rest of the application code
@@ -52,17 +52,11 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Puppeteer
-RUN npm install puppeteer
-
-# Set the working directory
-WORKDIR /app
-
 # Copy the built application from the build stage
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/package*.json ./
+WORKDIR /app
+COPY --from=build /app .
 
-# Install production dependencies
+# Install production dependencies, including Puppeteer
 RUN npm install --only=production
 
 # Expose the application port
