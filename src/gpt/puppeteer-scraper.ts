@@ -1,5 +1,4 @@
-import puppeteer, { Browser, Page } from 'puppeteer-core';
-import chromium from 'chrome-aws-lambda';
+import puppeteer, { Browser, Page } from 'puppeteer';
 
 const TIMEOUT = 60000; // Increase timeout to 60 seconds
 const MAX_RETRIES = 3;
@@ -12,9 +11,8 @@ export async function scrapeWebsite(url: string): Promise<string> {
     try {
       console.log(`Attempt ${attempt}: Launching browser`);
       browser = await puppeteer.launch({
-        headless: chromium.headless,
-        args: chromium.args,
-        executablePath: await chromium.executablePath,
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
 
       console.log(`Attempt ${attempt}: Opening new page`);

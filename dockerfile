@@ -52,6 +52,9 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Install Puppeteer
+RUN npm install puppeteer
+
 # Set the working directory
 WORKDIR /app
 
