@@ -1,4 +1,4 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
+import puppeteer, { Browser, Page } from "puppeteer";
 
 const TIMEOUT = 60000; // Increase timeout to 60 seconds
 const MAX_RETRIES = 3;
@@ -12,7 +12,7 @@ export async function scrapeWebsite(url: string): Promise<string> {
       console.log(`Attempt ${attempt}: Launching browser`);
       browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Use the environment variable
       });
 
@@ -23,14 +23,14 @@ export async function scrapeWebsite(url: string): Promise<string> {
       await page.setDefaultNavigationTimeout(TIMEOUT);
 
       console.log(`Attempt ${attempt}: Navigating to URL: ${url}`);
-      const response = await page.goto(url, { waitUntil: 'networkidle2' });
+      const response = await page.goto(url, { waitUntil: "networkidle2" });
 
       if (!response || !response.ok()) {
         throw new Error(`Failed to load page, status: ${response?.status()}`);
       }
 
       console.log(`Attempt ${attempt}: Waiting for network to be idle`);
-      await new Promise(resolve => setTimeout(resolve, 5000)); // Use setTimeout as a workaround
+      await new Promise((resolve) => setTimeout(resolve, 5000)); // Use setTimeout as a workaround
 
       console.log(`Attempt ${attempt}: Evaluating page content`);
       const content = await page.evaluate(() => document.body.innerText);
@@ -39,10 +39,10 @@ export async function scrapeWebsite(url: string): Promise<string> {
       await browser.close();
 
       if (!content) {
-        throw new Error('Failed to fetch content from the website');
+        throw new Error("Failed to fetch content from the website");
       }
 
-      console.log('Fetched website content:', content);
+      console.log("Fetched website content:", content);
       return content;
     } catch (error: any) {
       console.error(`Attempt ${attempt} failed:`, error);
@@ -50,10 +50,12 @@ export async function scrapeWebsite(url: string): Promise<string> {
         await browser.close();
       }
       if (attempt === MAX_RETRIES) {
-        throw new Error(`Failed to fetch product page after ${MAX_RETRIES} attempts: ${error.message}`);
+        throw new Error(
+          `Failed to fetch product page after ${MAX_RETRIES} attempts: ${error.message}`
+        );
       }
     }
   }
 
-  throw new Error('Unexpected error in scrapeWebsite');
+  throw new Error("Unexpected error in scrapeWebsite");
 }
