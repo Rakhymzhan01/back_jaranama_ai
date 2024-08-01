@@ -2,9 +2,9 @@ import puppeteer, { Browser, Page } from "puppeteer";
 
 const TIMEOUT = 60000; // Increase timeout to 60 seconds
 const MAX_RETRIES = 3;
+let browser: Browser | null = null;
 
 export async function scrapeWebsite(url: string): Promise<string> {
-  let browser: Browser | null = null;
   let page: Page | null = null;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -13,7 +13,7 @@ export async function scrapeWebsite(url: string): Promise<string> {
       browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-       // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Use the environment variable
+        // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Use the environment variable
       });
 
       console.log(`Attempt ${attempt}: Opening new page`);

@@ -19,13 +19,15 @@ RUN npm run build
 # Use the slim Node.js 18 image as the base for the final image
 FROM node:18-slim
 
-# Install necessary libraries for Puppetee
-
-# Install Chromium manually
-#RUN apt-get update && apt-get install -y chromium && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install necessary libraries for Puppeteer and Chromium
+RUN apt-get update && apt-get install -y wget gnupg && \
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+    apt-get update && apt-get install -y google-chrome-stable --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the PUPPETEER_EXECUTABLE_PATH environment variable
-#ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 # Set the working directory
 WORKDIR /app
