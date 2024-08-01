@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: jaranama-backend
+    env: node
+    plan: free
+    buildCommand: yarn install
+    startCommand: yarn start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: 'true'
