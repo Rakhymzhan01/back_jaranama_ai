@@ -19,44 +19,13 @@ RUN npm run build
 # Use the slim Node.js 18 image as the base for the final image
 FROM node:18-slim
 
-# Install necessary libraries for Puppeteer
-RUN apt-get update && apt-get install -y \
-  gconf-service \
-  libasound2 \
-  libatk1.0-0 \
-  libcups2 \
-  libdbus-1-3 \
-  libexpat1 \
-  libfontconfig1 \
-  libgcc1 \
-  libgconf-2-4 \
-  libgdk-pixbuf2.0-0 \
-  libglib2.0-0 \
-  libgtk-3-0 \
-  libnspr4 \
-  libpango-1.0-0 \
-  libx11-xcb1 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxfixes3 \
-  libxrandr2 \
-  libxss1 \
-  libxtst6 \
-  ca-certificates \
-  fonts-liberation \
-  libappindicator1 \
-  libnss3 \
-  lsb-release \
-  xdg-utils \
-  wget \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+# Install necessary libraries for Puppetee
 
 # Install Chromium manually
-RUN apt-get update && apt-get install -y chromium && apt-get clean && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y chromium && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the PUPPETEER_EXECUTABLE_PATH environment variable
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+#ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Set the working directory
 WORKDIR /app
